@@ -6,7 +6,6 @@ if (isset($_GET['filename'])) {
     if ($fp) {
         header("Content-Type: image/png");
         header("Content-Length: " . filesize($path));
-
         fpassthru($fp);
         fclose($fp);
         exit;

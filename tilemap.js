@@ -1,16 +1,14 @@
 /*
  * Tile map example by Julian Kreller
- * - References in comments
+ * - References in comments and sources.txt
  * - x/y-Axis for pixels
  * - u/v-Axis for tile count
+ * - Start point is (0, 0)
  */
 
-// Options
-/////// TODO Make as object
-let tileCountU = 22;
-let tileCountV = 11;
+let tileCount = {u: 22, v: 11};
 let tileSize = 372;
-let completeSize = {x: tileCountU * tileSize, y: tileCountV * tileSize};
+let completeSize = {x: tileCount.u * tileSize, y: tileCount.v * tileSize};
 let currentPoint = {x: 0, y: 0};
 
 window.onload = () => {
@@ -61,7 +59,7 @@ window.onload = () => {
 
   function setTiles(isInitial = false) {
     if (isInitial) {
-      for (let v = 1; v <= tileCountV; v++) {
+      for (let v = 1; v <= tileCount.v; v++) {
         tiles[v] = [];
       }
     }
@@ -69,27 +67,28 @@ window.onload = () => {
     const currentPointUV = pixelToTileCountScale(currentPoint);
 
     let lastU = currentPointUV.u + Math.ceil(tileRateX);
-    if (lastU > tileCountU) {
-      lastU = tileCountU;
+    if (lastU > tileCount.u) {
+      lastU = tileCount.u;
     }
     let lastV = currentPointUV.v + Math.ceil(tileRateY);
-    if (lastV > tileCountV) {
-      lastV = tileCountV;
+    if (lastV > tileCount.v) {
+      lastV = tileCount.v;
     }
 
     for (let v = currentPointUV.v; v <= lastV; v++) {
       for (let u = currentPointUV.u; u <= lastU; u++) {
-        const padding = 1;
+        if (tiles[v] && !tiles[v][u] || isInitial) {
+          const padding = 1;
+          const minU = currentPointUV.u - padding;
+          const maxU = currentPointUV.u + Math.ceil(tileRateX) + padding;
+          const minV = currentPointUV.v - padding;
+          const maxV = currentPointUV.v + Math.ceil(tileRateY) + padding;
 
-        const minU = currentPointUV.u - padding;
-        const maxU = currentPointUV.u + Math.ceil(tileRateX) + padding;
-        const minV = currentPointUV.v - padding;
-        const maxV = currentPointUV.v + Math.ceil(tileRateY) + padding;
-
-        if (u > minU && u < maxU && v > minV && v < maxV && (tiles[v] && !tiles[v][u] || isInitial)) {
-          setTile(u, v);
-        } else if (isInitial) {
-          tiles[v][u] = null;
+          if (u > minU && u < maxU && v > minV && v < maxV) {
+            setTile(u, v);
+          } else if (isInitial) {
+            tiles[v][u] = null;
+          }
         }
       }
     }
@@ -112,13 +111,13 @@ window.onload = () => {
     const tileCountScalePoint = {u: 1, v: 1};
 
     if (pixelPoint.x > completeSize.x) {
-      tileCountScalePoint.u = tileCountU;
+      tileCountScalePoint.u = tileCount.u;
     } else if (pixelPoint.x > 0) {
       tileCountScalePoint.u = Math.ceil(pixelPoint.x / tileSize);
     }
 
     if (pixelPoint.y > completeSize.y) {
-      tileCountScalePoint.v = tileCountV;
+      tileCountScalePoint.v = tileCount.v;
     } else if (pixelPoint.y > 0) {
       tileCountScalePoint.v = Math.ceil(pixelPoint.y / tileSize);
     }

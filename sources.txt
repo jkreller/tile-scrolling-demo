@@ -1,1 +1,8 @@
+Satellite photo:
 https://visibleearth.nasa.gov/images/73826/october-blue-marble-next-generation-w-topography-and-bathymetry/73835l
+
+Code sources:
+https://www.w3schools.com/html/html5_canvas.asp
+https://stackoverflow.com/questions/38142308/canvas-drag-on-mouse-movement
+https://stackoverflow.com/questions/36649298/how-to-read-a-image-file-using-ajax-and-render-to-canvas?lq=1
+https://stackoverflow.com/questions/900207/return-a-php-page-as-an-image
